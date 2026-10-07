@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f5ef" />
+  <meta name="description" content="Find something delicious to cook with the ingredients you already have." />
+  <title>AI Recipe from Available Ingredients</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Pantry home"><span class="brand-mark" aria-hidden="true">✳</span><span>pantry<span class="brand-dot">.</span></span></a>
+    <div class="topbar-note"><span class="status-dot"></span> Your kitchen, your next favorite</div>
+    <a class="about-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> MAKE SOMETHING GOOD</div>
+        <h1>What’s in your<br /><em>kitchen today?</em></h1>
+        <p>Tell us what you have. We’ll find the good stuff you can make with it.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="art-sun"></div><div class="art-leaf leaf-one">✳</div><div class="art-leaf leaf-two">✳</div><div class="art-bowl"><div class="bowl-food"><i></i><i></i><i></i><i></i><i></i></div></div><span class="art-spark spark-one">✦</span><span class="art-spark spark-two">✧</span></div>
+    </section>
+    <section class="workspace" aria-label="Recipe finder">
+      <aside class="finder-panel">
+        <div class="section-heading"><span class="step-number">01</span><div><h2>Your ingredients</h2><p>Start with what you’ve got on hand.</p></div></div>
+        <label class="search-label" for="ingredient-search">ADD AN INGREDIENT</label>
+        <div class="ingredient-entry"><span class="search-icon" aria-hidden="true">⌕</span><input id="ingredient-search" type="text" placeholder="Try “tomatoes” or “rice”…" autocomplete="off" aria-label="Search or type ingredients" aria-autocomplete="list" aria-controls="suggestions" /><button id="add-ingredient" class="add-button" type="button" aria-label="Add ingredient">+</button><ul id="suggestions" class="suggestions" role="listbox" hidden></ul></div>
+        <p class="input-hint">Type a name and press Enter. Separate several with commas.</p>
+        <div id="ingredient-chips" class="ingredient-chips" aria-live="polite"></div>
+        <div class="pantry-row"><div><strong>Pantry staples</strong><span>Count the basics you have.</span></div><label class="switch"><input id="pantry-staples" type="checkbox" checked /><span class="switch-track"></span><span class="sr-only">Include pantry staples such as salt, pepper, and oil</span></label></div>
+        <div class="divider"></div>
+        <div class="section-heading compact"><span class="step-number">02</span><div><h2>Make it yours</h2><p>A few kitchen preferences.</p></div></div>
+        <fieldset class="filter-group"><legend>DIETARY PREFERENCES</legend><div class="filter-options">
+          <label class="check-option"><input type="checkbox" value="vegetarian" class="diet-filter" /><span class="checkmark"></span>Vegetarian</label><label class="check-option"><input type="checkbox" value="vegan" class="diet-filter" /><span class="checkmark"></span>Vegan</label><label class="check-option"><input type="checkbox" value="dairyFree" class="diet-filter" /><span class="checkmark"></span>Dairy-free</label><label class="check-option"><input type="checkbox" value="glutenFree" class="diet-filter" /><span class="checkmark"></span>Gluten-free</label><label class="check-option"><input type="checkbox" value="nutFree" class="diet-filter" /><span class="checkmark"></span>Nut-free</label>
+        </div></fieldset>
+        <div class="allergy-field"><label class="field-label" for="allergies">ALLERGIES <span>STRICT EXCLUSION</span></label><input id="allergies" class="plain-input" type="text" placeholder="e.g. peanuts, dairy" /><small>Comma-separated. Recipes containing these are hidden.</small></div>
+        <div class="time-field"><label class="field-label" for="time-limit">MAX COOKING TIME <span id="time-label">Any time</span></label><input id="time-limit" type="range" min="15" max="90" step="15" value="90" /><div class="range-labels"><span>15 min</span><span>90+ min</span></div></div>
+        <button id="find-recipes" class="find-button" type="button"><span>Find my recipes</span><span aria-hidden="true">→</span></button>
+        <p class="local-note"><span>✳</span> Matched against our local recipe collection</p>
+      </aside>
+      <section class="results-area" aria-labelledby="results-heading">
+        <div class="results-top"><div><div class="eyebrow results-eyebrow"><span class="eyebrow-line"></span> THE GOOD BIT</div><h2 id="results-heading">A little inspiration</h2><p id="results-subtitle">Add a few ingredients and we’ll get cooking.</p></div><div id="result-count" class="result-count" hidden></div></div>
+        <div id="results" class="recipe-grid" aria-live="polite" aria-busy="false"></div>
+        <div id="empty-state" class="empty-state"><div class="empty-illustration" aria-hidden="true"><span class="empty-plate"></span><span class="empty-leaf">✳</span><span class="empty-spark">✦</span></div><h3>Your next meal is in there.</h3><p>Add a few ingredients to discover recipes that make the most of what you already have.</p><div class="try-suggestions"><span>Need a nudge?</span><button type="button" class="example-ingredient" data-ingredients="eggs, spinach, feta">Eggs + greens</button><button type="button" class="example-ingredient" data-ingredients="chickpeas, tomatoes, rice">A pantry bowl</button></div></div>
+        <div id="loading-state" class="loading-state" hidden><span class="loader"></span><div><strong>Looking through the pantry…</strong><span>Finding the best matches for you.</span></div></div>
+        <div id="no-results" class="empty-state no-results" hidden><div class="empty-illustration no-match" aria-hidden="true">⌕</div><h3>No matches this time.</h3><p>Try widening your time limit, adjusting your filters, or adding another ingredient.</p><button id="clear-filters" class="text-button" type="button">Clear filters <span>→</span></button></div>
+        <div id="error-state" class="error-state" hidden><strong>We hit a small snag.</strong><p>Please try again in a moment.</p><button id="retry" class="text-button" type="button">Try again <span>→</span></button></div>
+      </section>
+    </section>
+    <section class="how-it-works" id="how-it-works"><div class="eyebrow"><span class="eyebrow-line"></span> GOOD TO KNOW</div><h2>A better way to use what you have.</h2><div class="how-grid"><div><span>01</span><h3>We find the overlap</h3><p>Recipes are ranked by how many of their essential ingredients are already in your kitchen.</p></div><div><span>02</span><h3>Every match makes sense</h3><p>See what you have, what’s missing, and why each dish made the list.</p></div><div><span>03</span><h3>Make it work for you</h3><p>Filter by diet, check allergies, and build a shopping list for anything missing.</p></div></div></section>
+    <footer><a class="brand footer-brand" href="#top"><span class="brand-mark">✳</span><span>pantry<span class="brand-dot">.</span></span></a><span>Good food starts with what you have.</span><span class="footer-small">Recipes from our local collection · Match scores are ingredient coverage, not a success guarantee.</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="recipe-dialog" class="recipe-dialog"><button id="close-dialog" class="dialog-close" aria-label="Close recipe details">×</button><div id="dialog-content"></div></dialog>
+</body>
+</html>
